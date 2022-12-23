@@ -204,6 +204,194 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 				return fmt.Errorf("%s must be base64 but got %v", property, value)
 			}
 
+		case "hexcolor":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsHexColor(v) {
+				return fmt.Errorf("%s must be hex color but got %v", property, value)
+			}
+
+		case "hexadecimal":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsHexadecimal(v) {
+				return fmt.Errorf("%s must be hexadecimal but got %v", property, value)
+			}
+
+		case "json":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsJSON(v) {
+				return fmt.Errorf("%s must be JSON but got %v", property, value)
+			}
+
+		case "rgbcolor":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsRGBColor(v) {
+				return fmt.Errorf("%s must be RGB color but got %v", property, value)
+			}
+
+		case "url":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsURL(v) {
+				return fmt.Errorf("%s must be URL but got %v", property, value)
+			}
+
+		case "fullurl":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsFullURL(v) {
+				return fmt.Errorf("%s must be URI but got %v", property, value)
+			}
+
+		case "ip":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsIP(v) {
+				return fmt.Errorf("%s must be IP but got %v", property, value)
+			}
+
+		case "ipv4":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsIPv4(v) {
+				return fmt.Errorf("%s must be IPv4 but got %v", property, value)
+			}
+
+		case "ipv6":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsIPv6(v) {
+				return fmt.Errorf("%s must be IPv6 but got %v", property, value)
+			}
+
+		case "cidr":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsCIDR(v) {
+				return fmt.Errorf("%s must be CIDR but got %v", property, value)
+			}
+
+		case "cidrv4":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsCIDRv4(v) {
+				return fmt.Errorf("%s must be CIDRv4 but got %v", property, value)
+			}
+
+		case "cidrv6":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsCIDRv6(v) {
+				return fmt.Errorf("%s must be CIDRv6 but got %v", property, value)
+			}
+
+		case "uuid":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsUUID(v) {
+				return fmt.Errorf("%s must be UUID but got %v", property, value)
+			}
+
+		case "uuid3":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsUUID3(v) {
+				return fmt.Errorf("%s must be UUIDv3 but got %v", property, value)
+			}
+
+		case "uuid4":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsUUID4(v) {
+				return fmt.Errorf("%s must be UUIDv4 but got %v", property, value)
+			}
+
+		case "uuid5":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsUUID5(v) {
+				return fmt.Errorf("%s must be UUIDv5 but got %v", property, value)
+			}
+
+		case "filepath":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsFilePath(v) {
+				return fmt.Errorf("%s must be file path but got %v", property, value)
+			}
+
+		case "unixpath":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsUnixPath(v) {
+				return fmt.Errorf("%s must be unix path but got %v", property, value)
+			}
+
+		case "winpath":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsWinPath(v) {
+				return fmt.Errorf("%s must be windows path but got %v", property, value)
+			}
+
+		case "isbn10":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsISBN10(v) {
+				return fmt.Errorf("%s must be ISBN10 but got %v", property, value)
+			}
+
+		case "isbn13":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsISBN13(v) {
+				return fmt.Errorf("%s must be ISBN13 but got %v", property, value)
+			}
 		}
 
 	default:

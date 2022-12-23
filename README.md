@@ -56,3 +56,5 @@ example of how a "strictly" typed document can be enforced.
 - [] Add Custom Error Types
 - [] Support Extending Schemas
 - [] Add Benchmarks
+- [] Update Readme to Show Usage Examples
+- [] Document Available Validation Rules

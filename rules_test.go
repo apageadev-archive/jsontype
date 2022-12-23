@@ -386,6 +386,54 @@ func TestEvalFormatBase64(t *testing.T) {
 	}
 }
 
+func TestEvalFormatHexColor(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "hexcolor", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that "#ffffff" is hexcolor
+	err = jsontype.Evaluate("fake", "format", "hexcolor", "#ffffff")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that "333" is hexcolor
+	err = jsontype.Evaluate("fake", "format", "hexcolor", "333")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test invalid hex color
+	err = jsontype.Evaluate("fake", "format", "hexcolor", "Z34FF9")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestEvalFormatHexadecimal(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "hexadecimal", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that F00B42 is hexidecimal
+	err = jsontype.Evaluate("fake", "format", "hexadecimal", "F00B42")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test invalid hex
+	err = jsontype.Evaluate("fake", "format", "hexadecimal", "Z34FF9")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
 func TestBadRule(t *testing.T) {
 	err := jsontype.Evaluate("fake", "badrule", "abc", "abc")
 	if err == nil {
