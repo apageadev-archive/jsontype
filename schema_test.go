@@ -145,7 +145,7 @@ func TestSchemaValidate(t *testing.T) {
 	}
 
 	// load our schema into the schema manager
-	err := sm.LoadSchema([]byte(`{"type": "Person", "properties": {"name": {"type": "string"}}}`))
+	err := sm.LoadSchema([]byte(`{"type":"Person","properties":{"name":{"type":"string","rules":{"min_length":1,"max_length":100,"format":"alpha"}}}}`))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -161,6 +161,19 @@ func TestSchemaValidate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	// test bad json
+	err = schema.Validate([]byte(`{`))
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test rule violation
+	err = schema.Validate([]byte(`{"name": "1a-"}`))
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 }
 
 func TestSchemaValidateRequiredProperties(t *testing.T) {
@@ -185,6 +198,60 @@ func TestSchemaValidateRequiredProperties(t *testing.T) {
 
 	// validate our json data against our schema
 	err = schema.Validate([]byte(`{"name": "John"}`))
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestSchemaUndefinedProperties(t *testing.T) {
+
+	// create our schema manager
+	sm := jsontype.NewSchemaManager()
+	if sm == nil {
+		t.Fatal("failed to create schema manager")
+	}
+
+	// load our schema into the schema manager
+	err := sm.LoadSchema([]byte(`{"type":"Person","properties":{"name":{"type":"string"},"age":{"type":"number"}}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// get our schema from the schema manager
+	schema, err := sm.GetSchema("person")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// validate our json data against our schema
+	err = schema.Validate([]byte(`{"name": "John", "age": 30, "address": "123 Main St"}`))
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestSchemaValidatePropertyType(t *testing.T) {
+
+	// create our schema manager
+	sm := jsontype.NewSchemaManager()
+	if sm == nil {
+		t.Fatal("failed to create schema manager")
+	}
+
+	// load our schema into the schema manager
+	err := sm.LoadSchema([]byte(`{"type":"Person","properties":{"name":{"type":"string"},"age":{"type":"number"}}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// get our schema from the schema manager
+	schema, err := sm.GetSchema("person")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// validate our json data against our schema
+	err = schema.Validate([]byte(`{"name": "John", "age": "30"}`))
 	if err == nil {
 		t.Fatal("expected error")
 	}

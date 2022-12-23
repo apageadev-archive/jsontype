@@ -137,6 +137,21 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 			return fmt.Errorf("%s must contain %v but got %v", property, ruleArg, value)
 		}
 
+	case "startswith":
+		substr, ok := ruleArg.(string)
+		if !ok {
+			return fmt.Errorf("startswith rule must be a string but got %v", ruleArg)
+		}
+
+		str, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("%s must be a string but got %v", property, value)
+		}
+
+		if !validate.StartsWith(str, substr) {
+			return fmt.Errorf("%s must start with %v but got %v", property, substr, value)
+		}
+
 	// TODO: should we support multiple formats for a single property?
 	case "format":
 		format, ok := ruleArg.(string)

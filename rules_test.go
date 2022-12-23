@@ -181,7 +181,7 @@ func TestEvalRegex(t *testing.T) {
 	}
 
 	// test bad value type
-	err = jsontype.Evaluate("fake", "noneof", "abc", 123)
+	err = jsontype.Evaluate("fake", "regex", "abc", 123)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -225,6 +225,33 @@ func TestEvalContaains(t *testing.T) {
 	}
 }
 
+func TestEvalStartsWith(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "startswith", 123, "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test bad value type
+	err = jsontype.Evaluate("fake", "startswith", "abc", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that "abc" starts with "a"
+	err = jsontype.Evaluate("fake", "startswith", "a", "abc")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that "abc" does not start with "d"
+	err = jsontype.Evaluate("fake", "startswith", "d", "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
 func TestEvalFormatAlpha(t *testing.T) {
 	// test that "abc" is alpha
 	err := jsontype.Evaluate("fake", "format", "alpha", "abc")
@@ -239,9 +266,30 @@ func TestEvalFormatAlpha(t *testing.T) {
 	}
 }
 
+func TestEvalFormatBadInput(t *testing.T) {
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", 123, "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test bad value type
+	err = jsontype.Evaluate("fake", "format", "alpha", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
 func TestEvalFormatAlphaNum(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "alphanum", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	// test that "abc123" is alphanum
-	err := jsontype.Evaluate("fake", "format", "alphanum", "abc123")
+	err = jsontype.Evaluate("fake", "format", "alphanum", "abc123")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -251,11 +299,24 @@ func TestEvalFormatAlphaNum(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	// test bad value type
+	err = jsontype.Evaluate("fake", "format", "alphanum", "abc-123")
+	if err == nil {
+		t.Fatal("expected error")
+	}
 }
 
 func TestEvalFormatAlphaDash(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "alphadash", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	// test that "abc123" is alphanum
-	err := jsontype.Evaluate("fake", "format", "alphadash", "abc123")
+	err = jsontype.Evaluate("fake", "format", "alphadash", "abc123")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -284,14 +345,28 @@ func TestEvalFormatAlphaDash(t *testing.T) {
 }
 
 func TestEvalFormatEmail(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "email", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	// test that "abc@gmail.com" is email
-	err := jsontype.Evaluate("fake", "format", "email", "abc@gmail.com")
+	err = jsontype.Evaluate("fake", "format", "email", "abc@gmail.com")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// test that "abc" is not email
 	err = jsontype.Evaluate("fake", "format", "email", "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestBadRule(t *testing.T) {
+	err := jsontype.Evaluate("fake", "badrule", "abc", "abc")
 	if err == nil {
 		t.Fatal("expected error")
 	}

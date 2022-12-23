@@ -48,3 +48,11 @@ example of how a "strictly" typed document can be enforced.
 - object
 - array
 - list
+
+
+### TODO:
+
+- [] Add Formats from V10 and Gookit Validator
+- [] Add Custom Error Types
+- [] Support Extending Schemas
+- [] Add Benchmarks
