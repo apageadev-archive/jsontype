@@ -115,6 +115,28 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 		}
 		return fmt.Errorf("%s must be any of %v but got %v", property, options, value)
 
+	case "regex":
+		regex, ok := ruleArg.(string)
+		if !ok {
+			ruleArgType := reflect.TypeOf(ruleArg)
+			return fmt.Errorf("regex rule must be a string but got %v", ruleArgType)
+		}
+
+		vstr, ok := value.(string)
+		if !ok {
+			valueType := reflect.TypeOf(value)
+			return fmt.Errorf("%s must be a string but got %v", property, valueType)
+		}
+
+		if !validate.Regexp(vstr, regex) {
+			return fmt.Errorf("%s must match %v but got %v", property, regex, value)
+		}
+
+	case "contains":
+		if !validate.Contains(value, ruleArg) {
+			return fmt.Errorf("%s must contain %v but got %v", property, ruleArg, value)
+		}
+
 	// TODO: should we support multiple formats for a single property?
 	case "format":
 		format, ok := ruleArg.(string)
@@ -157,7 +179,6 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 			if !validate.IsEmail(v) {
 				return fmt.Errorf("%s must be email but got %v", property, value)
 			}
-
 		}
 
 	default:

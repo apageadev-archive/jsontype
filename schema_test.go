@@ -3,6 +3,8 @@ package jsontype_test
 import (
 	"testing"
 
+	"github.com/goccy/go-reflect"
+
 	"github.com/apageadev/jsontype"
 )
 
@@ -26,6 +28,12 @@ func TestSchemaManagerLoadSchema(t *testing.T) {
 
 	if sm.SchemaCount() != 1 {
 		t.Fatal("failed to load schema")
+	}
+
+	// test bad schema
+	err = sm.LoadSchema([]byte(`{`))
+	if err == nil {
+		t.Fatal("expected error")
 	}
 }
 
@@ -64,6 +72,12 @@ func TestSchemaManagerGetSchema(t *testing.T) {
 	if schema.Type != "Person" {
 		t.Fatal("failed to get schema")
 	}
+
+	// test bad schema name
+	_, err = sm.GetSchema("bad")
+	if err == nil {
+		t.Fatal("expected error")
+	}
 }
 
 func TestSchemaManagerDeleteSchema(t *testing.T) {
@@ -88,6 +102,12 @@ func TestSchemaManagerDeleteSchema(t *testing.T) {
 
 	if sm.SchemaCount() != 0 {
 		t.Fatal("failed to delete schema")
+	}
+
+	// test bad schema name
+	err = sm.DeleteSchema("bad")
+	if err == nil {
+		t.Fatal("expected error")
 	}
 }
 
@@ -138,6 +158,65 @@ func TestSchemaValidate(t *testing.T) {
 
 	// validate our json data against our schema
 	err = schema.Validate([]byte(`{"name": "John"}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSchemaValidateRequiredProperties(t *testing.T) {
+
+	// create our schema manager
+	sm := jsontype.NewSchemaManager()
+	if sm == nil {
+		t.Fatal("failed to create schema manager")
+	}
+
+	// load our schema into the schema manager
+	err := sm.LoadSchema([]byte(`{"type":"Person","properties":{"name":{"type":"string"},"age":{"type":"number"}}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// get our schema from the schema manager
+	schema, err := sm.GetSchema("person")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// validate our json data against our schema
+	err = schema.Validate([]byte(`{"name": "John"}`))
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestSchemaToString(t *testing.T) {
+
+	// create our schema manager
+	sm := jsontype.NewSchemaManager()
+	if sm == nil {
+		t.Fatal("failed to create schema manager")
+	}
+
+	// load our schema into the schema manager
+	err := sm.LoadSchema([]byte(`{"type":"Person","properties":{"name":{"type":"string"},"age":{"type":"number"}}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// get our schema from the schema manager
+	schema, err := sm.GetSchema("person")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// validate our json data against our schema
+	s := schema.String()
+	if reflect.TypeOf(s).Kind() != reflect.String {
+		t.Fatal("failed to convert schema to string")
+	}
+
+	err = sm.LoadSchema([]byte(s))
 	if err != nil {
 		t.Fatal(err)
 	}

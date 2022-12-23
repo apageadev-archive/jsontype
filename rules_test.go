@@ -102,6 +102,12 @@ func TestEvalAnyOf(t *testing.T) {
 		t.Fatal("expected error")
 	}
 
+	// test bad value type
+	err = jsontype.Evaluate("fake", "noneof", []interface{}{"abc", "def"}, "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	// test that "abc" is in the list
 	err = jsontype.Evaluate("fake", "anyof", []interface{}{"abc", "def"}, []interface{}{"abc"})
 	if err != nil {
@@ -118,6 +124,12 @@ func TestEvalAnyOf(t *testing.T) {
 func TestEvalAllOf(t *testing.T) {
 	// test bad arg type
 	err := jsontype.Evaluate("fake", "allof", "abc", "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test bad value type
+	err = jsontype.Evaluate("fake", "noneof", 123, "abc")
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -142,6 +154,12 @@ func TestEvalNoneOf(t *testing.T) {
 		t.Fatal("expected error")
 	}
 
+	// test bad value type
+	err = jsontype.Evaluate("fake", "noneof", []interface{}{"abc", "def"}, "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	// test that "abc" is in the list
 	err = jsontype.Evaluate("fake", "noneof", []interface{}{"abc", "def"}, []interface{}{"ghi"})
 	if err != nil {
@@ -152,6 +170,58 @@ func TestEvalNoneOf(t *testing.T) {
 	err = jsontype.Evaluate("fake", "noneof", []interface{}{"abc", "def"}, []interface{}{"abc"})
 	if err == nil {
 		t.Fatal("expected error")
+	}
+}
+
+func TestEvalRegex(t *testing.T) {
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "regex", 123, "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test bad value type
+	err = jsontype.Evaluate("fake", "noneof", "abc", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that "abc" matches the regex
+	err = jsontype.Evaluate("fake", "regex", "abc", "abc")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that "123" does not match the regex
+	err = jsontype.Evaluate("fake", "regex", "abc", "123")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestEvalContaains(t *testing.T) {
+	// test that "abc" contains "a"
+	err := jsontype.Evaluate("fake", "contains", "a", "abc")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that "abc" does not contain "d"
+	err = jsontype.Evaluate("fake", "contains", "d", "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that slices work
+	err = jsontype.Evaluate("fake", "contains", "a", []interface{}{"a", "b", "c"})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that maps work
+	err = jsontype.Evaluate("fake", "contains", "a", map[string]interface{}{"a": 1, "b": 2, "c": 3})
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 

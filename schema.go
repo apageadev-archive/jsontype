@@ -30,7 +30,7 @@ type Schema struct {
 type Property struct {
 	Type        string                 `json:"type" validate:"required|in:number,string,list,array,bool,object"`
 	Description string                 `json:"description,omitempty"`
-	Rules       map[string]interface{} `json:"rules"`
+	Rules       map[string]interface{} `json:"rules,omitempty"`
 }
 
 // NewSchemaManager creates and returns an initialized SchemaManager that is empty.
