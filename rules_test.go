@@ -365,6 +365,27 @@ func TestEvalFormatEmail(t *testing.T) {
 	}
 }
 
+func TestEvalFormatBase64(t *testing.T) {
+
+	// test bad arg type
+	err := jsontype.Evaluate("fake", "format", "base64", 123)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	// test that "YWJj" is base64 encoded
+	err = jsontype.Evaluate("fake", "format", "base64", "YWJj")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// test that "abc" is not base64
+	err = jsontype.Evaluate("fake", "format", "base64", "abc")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
 func TestBadRule(t *testing.T) {
 	err := jsontype.Evaluate("fake", "badrule", "abc", "abc")
 	if err == nil {

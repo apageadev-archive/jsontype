@@ -194,6 +194,16 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 			if !validate.IsEmail(v) {
 				return fmt.Errorf("%s must be email but got %v", property, value)
 			}
+
+		case "base64":
+			v, ok := value.(string)
+			if !ok {
+				return fmt.Errorf("%s must be a string but got %v", property, value)
+			}
+			if !validate.IsBase64(v) {
+				return fmt.Errorf("%s must be base64 but got %v", property, value)
+			}
+
 		}
 
 	default:
