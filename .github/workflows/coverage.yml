@@ -34,10 +34,15 @@ jobs:
           else
             COLOR=orange
           fi
-          curl "https://img.shields.io/badge/coavrege-$total%25-$COLOR" > jsontype-coverage-badge.svg
+          curl "https://img.shields.io/badge/coverage-$total%25-$COLOR" > jsontype-coverage-badge.svg
 
-      - name: Archive code coverage badge
-        uses: actions/upload-artifact@v3
+      - name: Push JSONType Code Coverage Badge
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          name: code-coverage-report
-          path: jsontype-coverage-badge.svg
+          source_file: jsontype-coverage-badge.svg
+          destination_repo: 'dmnemec/release-test'
+          user_email: 'dansikes7@gmail.com'
+          user_name: 'dsikes'
+          commit_message: 'updating jsontype coverage badge'
