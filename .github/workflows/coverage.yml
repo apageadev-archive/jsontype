@@ -39,7 +39,7 @@ jobs:
       - name: Push JSONType Code Coverage Badge
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+          API_TOKEN_GITHUB: ${{ secrets.STATIC_ASSETS_TOKEN }}
         with:
           source_file: jsontype-coverage-badge.svg
           destination_repo: 'apageadev/apageadev.github.io'
