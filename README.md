@@ -1,6 +1,7 @@
 # JSONType
 
 The JSONType package provides the mechanisms to manage strictly typed JSON Documents.
+![codecoverage](https://apageadev.github.io/jsontype-coverage-badge.svg)
 
 ## Schemas
 
