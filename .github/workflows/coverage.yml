@@ -35,11 +35,9 @@ jobs:
             COLOR=orange
           fi
           curl "https://img.shields.io/badge/coavrege-$total%25-$COLOR" > jsontype-coverage-badge.svg
-          git clone https://github.com/apageadev/apageadev.github.io
-          cd apageadev.github.io
-          cp ../jsontype-coverage-badge.svg .
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git add jsontype-coverage-badge.svg
-          git commit -m "updating jsontype-coverage-badge"
-          git push -u origin main
+
+      - name: Archive code coverage badge
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: jsontype-coverage-badge.svg
