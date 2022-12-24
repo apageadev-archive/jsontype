@@ -790,27 +790,6 @@ func TestEvalFormatFilePath(t *testing.T) {
 	}
 }
 
-func TestEvalFormatISBN10(t *testing.T) {
-
-	// test bad arg type
-	err := jsontype.Evaluate("fake", "format", "isbn10", 123)
-	if err == nil {
-		t.Fatal("expected error")
-	}
-
-	// test that "0-545-01022-5" is isbn10
-	err = jsontype.Evaluate("fake", "format", "isbn10", "0-545-01022-5")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// test that "0.1.2" is not isbn10
-	err = jsontype.Evaluate("fake", "format", "isbn10", "0.1.2")
-	if err == nil {
-		t.Fatal("expected error")
-	}
-}
-
 func TestBadRule(t *testing.T) {
 	err := jsontype.Evaluate("fake", "badrule", "abc", "abc")
 	if err == nil {
