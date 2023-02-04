@@ -49,7 +49,6 @@ example of how a "strictly" typed document can be enforced.
 - array
 - list
 
-
 ### TODO:
 
 - [] Add Formats from V10 and Gookit Validator

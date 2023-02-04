@@ -327,7 +327,7 @@ func Evaluate(property, ruleType string, ruleArg, value interface{}) error {
 				return fmt.Errorf("%s must be a string but got %v", property, value)
 			}
 			if !validate.IsFilePath(v) {
-				return fmt.Errorf("%s must be file path but got %v", property, value)
+				return fmt.Errorf("%v (%s) is not a valid file path", property, value)
 			}
 		}
 
